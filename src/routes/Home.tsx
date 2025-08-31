@@ -7,12 +7,8 @@ import LoadingScreen from "../components/LoadingScreen";
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [backendSleeping, setBackendSleeping] = useState(false);
-  const add = useCart(s => s.add);
-
-  useEffect(() => {
-    listProducts().then(p => { setProducts(p); setLoading(false); });
-  }, []);
+  const [error, setError] = useState<string | null>(null);
+  const add = useCart((s) => s.add);
 
   useEffect(() => {
     (async () => {
@@ -20,22 +16,26 @@ export default function Home() {
         const p = await listProducts();
         setProducts(p);
       } catch (err: any) {
-        console.error(err);
-        setBackendSleeping(true); 
+        console.error("Fehler beim Laden:", err);
+
+        if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
+          setError("⚡ Backend wacht gerade auf. Bitte einen Moment warten…");
+        } else if (err.message.includes("404")) {
+          setError("Backend ist erreichbar, aber Route nicht gefunden.");
+        } else {
+          setError("Produkte konnten nicht geladen werden.");
+        }
       } finally {
         setLoading(false);
       }
     })();
   }, []);
 
-  if (backendSleeping) {
-    return <LoadingScreen />;
-  }
-
-  const featured = products[0]; 
+  const featured = products[0];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 space-y-10">
+      {/* HERO SECTION */}
       <section className="relative overflow-hidden rounded-2xl border shadow-sm">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-tr from-rose-400/50 via-orange-300/40 to-amber-300/40" />
@@ -90,7 +90,10 @@ export default function Home() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-6 bg-black/10 blur-2xl rounded-3xl" aria-hidden />
+            <div
+              className="absolute -inset-6 bg-black/10 blur-2xl rounded-3xl"
+              aria-hidden
+            />
             <img
               src={
                 featured?.imageUrl ??
@@ -103,25 +106,49 @@ export default function Home() {
         </div>
       </section>
 
+      {/* PRODUCTS SECTION */}
       <section>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold">Neu im Shop</h2>
-          <Link to="/products" className="text-sm underline">Alle Produkte</Link>
+          <Link to="/products" className="text-sm underline">
+            Alle Produkte
+          </Link>
         </div>
+
+        {/* ERROR ANZEIGE */}
+        {error && (
+          <div className="p-3 mb-4 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded">
+            {error}
+          </div>
+        )}
+
         {loading ? (
-          <div>Lade…</div>
+          <LoadingScreen />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {products.slice(0, 3).map(p => (
-              <article key={p.id} className="rounded-xl border shadow-sm overflow-hidden bg-white">
+            {products.slice(0, 3).map((p) => (
+              <article
+                key={p.id}
+                className="rounded-xl border shadow-sm overflow-hidden bg-white"
+              >
                 <div className="aspect-[4/3] bg-gray-100">
-                  {p.imageUrl && <img src={p.imageUrl} alt={p.title} className="h-full w-full object-cover" />}
+                  {p.imageUrl && (
+                    <img
+                      src={p.imageUrl}
+                      alt={p.title}
+                      className="h-full w-full object-cover"
+                    />
+                  )}
                 </div>
                 <div className="p-3">
                   <div className="text-sm text-gray-500">{p.category}</div>
                   <div className="font-medium">{p.title}</div>
-                  <div className="text-sm text-gray-600 line-clamp-2">{p.description}</div>
-                  <div className="mt-2 font-semibold">{(p.price/100).toFixed(2)} €</div>
+                  <div className="text-sm text-gray-600 line-clamp-2">
+                    {p.description}
+                  </div>
+                  <div className="mt-2 font-semibold">
+                    {(p.price / 100).toFixed(2)} €
+                  </div>
                 </div>
               </article>
             ))}
