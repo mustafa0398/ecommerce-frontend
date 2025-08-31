@@ -2,15 +2,35 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { listProducts, type Product } from "../services/products";
 import { useCart } from "../store/cart";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [backendSleeping, setBackendSleeping] = useState(false);
   const add = useCart(s => s.add);
 
   useEffect(() => {
     listProducts().then(p => { setProducts(p); setLoading(false); });
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const p = await listProducts();
+        setProducts(p);
+      } catch (err: any) {
+        console.error(err);
+        setBackendSleeping(true); 
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  if (backendSleeping) {
+    return <LoadingScreen />;
+  }
 
   const featured = products[0]; 
 
