@@ -94,7 +94,19 @@ export default function AdminProducts() {
       let imageUrl = form.imageUrl?.trim() || "";
 
       if (form.imageMode === "file" && form.file) {
-        imageUrl = URL.createObjectURL(form.file);
+        const data = new FormData();
+        data.append("file", form.file);
+
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/upload`, {
+          method: "POST",
+          body: data,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, 
+          },
+        });
+
+        if (!res.ok) throw new Error("Upload fehlgeschlagen");
+        imageUrl = await res.text(); 
       }
 
       const payload: Omit<Product, "id"> = {
@@ -233,9 +245,7 @@ export default function AdminProducts() {
           className="border rounded px-3 py-2"
           placeholder="Kategorie"
           value={form.category}
-          onChange={(e) =>
-            setForm((f) => ({ ...f, category: e.target.value }))
-          }
+          onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
         />
         <textarea
           className="border rounded px-3 py-2"
