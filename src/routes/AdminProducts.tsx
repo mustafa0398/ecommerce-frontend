@@ -156,10 +156,14 @@ export default function AdminProducts() {
               const file = e.target.files?.[0] || null;
 
               if (file && file.size > 1024 * 1024) {
-                alert("❌ Datei zu groß! Maximal erlaubt sind 1 MB.");
+                setError("❌ Datei zu groß! Maximal erlaubt sind 1 MB.");
+                // Input zurücksetzen
+                e.target.value = "";
+                setForm((f) => ({ ...f, file: null }));
                 return;
               }
 
+              setError(null);
               setForm((f) => ({ ...f, file, imageUrl: f.imageUrl }));
             }}
           />
