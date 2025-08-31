@@ -2,7 +2,6 @@ import { Navigate, useLocation, useOutletContext } from "react-router-dom";
 import { isAdmin } from "../services/auth";
 
 export default function RequireAdmin({ children }: { children: React.ReactNode }) {
-  // User kommt direkt aus App.tsx Outlet-Context
   const { user } = useOutletContext<{ user: any }>();
   const loc = useLocation();
 

@@ -61,7 +61,7 @@ export default function ProductCard({ product }: { product: Product }) {
               onClick={() =>
                 add(
                   {
-                    productId: product.id,
+                     productId: product.id ?? 0,
                     title: product.title,
                     price: product.price,
                     imageUrl: product.imageUrl,

@@ -49,7 +49,7 @@ export default function Home() {
                 <button
                   onClick={() =>
                     add({
-                      productId: featured.id,
+                      productId: featured.id ?? 0,
                       title: featured.title,
                       price: featured.price,
                       imageUrl: featured.imageUrl,
