@@ -6,6 +6,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -14,14 +15,14 @@ export default function Register() {
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setLoading(true);
 
     try {
       const res = await register(email, password);
-      console.log("Registrierung erfolgreich:", res);
-
-      alert("Registrierung erfolgreich! Bitte logge dich jetzt ein.");
-      navigate("/login"); 
+      setSuccess(res); // "User registered"
+      // automatisch weiterleiten nach 2 Sekunden
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err: any) {
       setError(err.message || "Fehler bei der Registrierung");
     } finally {
@@ -39,6 +40,12 @@ export default function Register() {
         {error && (
           <div className="bg-red-100 text-red-700 border border-red-300 rounded p-2 mb-4 text-sm">
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="bg-green-100 text-green-700 border border-green-300 rounded p-2 mb-4 text-sm">
+            {success} – Weiterleitung zum Login...
           </div>
         )}
 
