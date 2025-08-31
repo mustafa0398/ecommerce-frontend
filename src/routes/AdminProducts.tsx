@@ -101,12 +101,12 @@ export default function AdminProducts() {
           method: "POST",
           body: data,
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, 
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
         if (!res.ok) throw new Error("Upload fehlgeschlagen");
-        imageUrl = await res.text(); 
+        imageUrl = await res.text();
       }
 
       const payload: Omit<Product, "id"> = {
@@ -154,6 +154,12 @@ export default function AdminProducts() {
             className="hidden"
             onChange={(e) => {
               const file = e.target.files?.[0] || null;
+
+              if (file && file.size > 1024 * 1024) {
+                alert("❌ Datei zu groß! Maximal erlaubt sind 1 MB.");
+                return;
+              }
+
               setForm((f) => ({ ...f, file, imageUrl: f.imageUrl }));
             }}
           />
