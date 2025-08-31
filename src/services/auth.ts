@@ -6,9 +6,16 @@ export async function register(email: string, password: string) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  if (!res.ok) throw new Error("Registrierung fehlgeschlagen");
-  return await res.text();
+
+  const text = await res.text();
+
+  if (!res.ok) {
+    throw new Error(text || "Registrierung fehlgeschlagen");
+  }
+
+  return text; // "User registered"
 }
+
 
 export async function login(email: string, password: string) {
   const res = await fetch(`${API_URL}/login`, {
