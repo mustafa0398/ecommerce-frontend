@@ -11,8 +11,6 @@ import AdminProducts from "./routes/AdminProducts";
 import RequireAdmin from "./components/RequireAdmin";
 import Orders from "./routes/Orders";
 import AdminDashboard from "./routes/AdminDashboard";
-
-// ⬇️ NEU
 import Register from "./routes/Register";
 import Login from "./routes/Login";
 

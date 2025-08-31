@@ -8,8 +8,6 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  // 🔑 Typ für Outlet-Context definieren, damit TS weiß was kommt
   const { setUser } = useOutletContext<{ setUser: (user: any) => void }>();
 
   async function handleLogin(e: React.FormEvent) {
@@ -20,8 +18,8 @@ export default function Login() {
     try {
       await login(email, password);
       const user = getUserFromToken();
-      setUser(user); // 🚀 User sofort im Navbar sichtbar
-      navigate("/"); // zurück zur Startseite
+      setUser(user); 
+      navigate("/"); 
     } catch (err: any) {
       setError(err.message || "Login fehlgeschlagen");
     } finally {

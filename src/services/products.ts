@@ -1,7 +1,7 @@
 export type Product = {
-  id?: number;             // jetzt optional für neue Produkte
+  id?: number;             
   title: string;
-  price: number;           // Cents
+  price: number;           
   description?: string;
   category?: string;
   imageUrl?: string;
@@ -11,14 +11,12 @@ export type Product = {
 const API_PUBLIC = `${import.meta.env.VITE_API_BASE_URL}/products`;
 const API_ADMIN = `${import.meta.env.VITE_API_BASE_URL}/admin/products`;
 
-// Alle User dürfen Produkte laden
 export async function listProducts(): Promise<Product[]> {
   const res = await fetch(API_PUBLIC);
   if (!res.ok) throw new Error("Produkte konnten nicht geladen werden");
   return res.json();
 }
 
-// Nur Admin darf hinzufügen
 export async function addProduct(p: Omit<Product, "id">): Promise<void> {
   const res = await fetch(API_ADMIN, {
     method: "POST",

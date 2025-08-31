@@ -94,8 +94,6 @@ export default function AdminProducts() {
       let imageUrl = form.imageUrl?.trim() || "";
 
       if (form.imageMode === "file" && form.file) {
-        // 🚨 Hier könnte dein Upload-Service rein (z. B. Firebase, S3, Spring Boot Endpoint)
-        // Aktuell nur eine Vorschau-URL:
         imageUrl = URL.createObjectURL(form.file);
       }
 
@@ -187,7 +185,6 @@ export default function AdminProducts() {
       <h1 className="text-2xl font-semibold">Admin · Produkte</h1>
       {error && <div className="text-red-600 text-sm">{error}</div>}
 
-      {/* Formular */}
       <form
         onSubmit={save}
         className="grid gap-3 bg-white border rounded-lg p-4"
@@ -209,7 +206,6 @@ export default function AdminProducts() {
           />
         </div>
 
-        {/* Bild-Modus wählen */}
         <div className="flex items-center gap-2 text-sm">
           <button
             type="button"
@@ -273,7 +269,6 @@ export default function AdminProducts() {
         </div>
       </form>
 
-      {/* Produktliste */}
       {loading ? (
         <div>Lade…</div>
       ) : (

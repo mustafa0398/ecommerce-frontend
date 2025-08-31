@@ -64,7 +64,6 @@ export default function App() {
         </div>
       </nav>
 
-      {/* ⬇️ jetzt auch user mitgeben */}
       <Outlet context={{ user, setUser }} />
     </div>
   );

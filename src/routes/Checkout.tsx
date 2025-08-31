@@ -22,13 +22,13 @@ export default function Checkout() {
     const orderPayload = {
       userId: user.sub,
       total: total(),
-      status: "pending" as const, // ✅ statt nur "pending"
+      status: "pending" as const, 
       items: items.map((i) => ({
         quantity: i.qty,
         price: i.price,
         title: i.title,
-        imageUrl: i.imageUrl ?? "", // Backend erwartet string, also fallback ""
-        product: { id: Number(i.productId) }, // ✅ string → number
+        imageUrl: i.imageUrl ?? "",
+        product: { id: Number(i.productId) }, 
       })),
     };
 

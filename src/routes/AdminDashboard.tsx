@@ -106,7 +106,6 @@ function Kpi({ title, value }: { title: string; value: string }) {
   );
 }
 
-// 🔥 StatusBadge akzeptiert jetzt string statt Union-Type
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
     pending: "bg-yellow-100 text-yellow-700",

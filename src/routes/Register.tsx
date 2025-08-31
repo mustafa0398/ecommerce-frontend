@@ -9,7 +9,6 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // optional: falls wir den User nach Registrierung direkt einloggen wollen
   const { setUser }: any = useOutletContext();
 
   async function handleRegister(e: React.FormEvent) {
@@ -22,7 +21,7 @@ export default function Register() {
       console.log("Registrierung erfolgreich:", res);
 
       alert("Registrierung erfolgreich! Bitte logge dich jetzt ein.");
-      navigate("/login"); // Weiterleitung zum Login
+      navigate("/login"); 
     } catch (err: any) {
       setError(err.message || "Fehler bei der Registrierung");
     } finally {

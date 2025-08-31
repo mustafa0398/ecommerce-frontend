@@ -40,7 +40,6 @@ export function getUserFromToken() {
 
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
-    // z.B. { sub: "...", role: "ADMIN" }
     return payload;
   } catch (e) {
     return null;
@@ -48,6 +47,5 @@ export function getUserFromToken() {
 }
 
 export function isAdmin(user: any): boolean {
-  // 🔑 Wichtig: prüfe exakt wie es im Token steht
   return user?.role === "ADMIN" || user?.role === "ROLE_ADMIN";
 }

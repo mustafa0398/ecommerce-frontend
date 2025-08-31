@@ -1,5 +1,3 @@
-// src/services/orders.ts
-
 import type { CartItem } from "../store/cart";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
@@ -11,8 +9,6 @@ export type OrderItemDto = {
   imageUrl: string;
   product: { id: number };
 };
-
-// src/services/orders.ts
 
 export type OrderResponse = {
   id: string;
@@ -35,7 +31,6 @@ export type OrderDto = {
   items: OrderItemDto[];
 };
 
-// Bestellung anlegen
 export async function createOrder(order: OrderDto): Promise<void> {
 const res = await fetch(`${API_URL}/orders`, {
     method: "POST",
@@ -51,7 +46,6 @@ const res = await fetch(`${API_URL}/orders`, {
   }
 }
 
-// Bestellungen eines Users holen
 export async function listMyOrders(userId: string): Promise<OrderResponse[]> {
 const res = await fetch(`${API_URL}/orders/${userId}`, {
     headers: {
