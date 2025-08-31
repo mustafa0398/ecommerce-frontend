@@ -1,4 +1,3 @@
-import type { CartItem } from "../store/cart";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
